@@ -86,7 +86,7 @@
                             
                             <button type="submit" class="btn btn-info">Post Now</button>
                             <sql:update dataSource = "${snapshot}" var = "result">
-                                select * from advertisement limit 10;
+                                update advertisement set status='ACT' where status='ACT';
                             </sql:update>
                         </div>
          </form>        

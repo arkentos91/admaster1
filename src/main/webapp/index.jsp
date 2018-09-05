@@ -27,17 +27,30 @@
                 google_ad_client: "ca-pub-3554298857405272",
                 enable_page_level_ads: true
             });
+            
         </script>
+        
+      
     </head>
     <body>
+         <!--select * from advertisement where status='ACT' limit <!%=request.getParameter("page")%>;-->
+ 
+         <c:set var = "from_page" value = "0" /> 
+         <c:set var = "to_page" value = "30"/>
         <sql:setDataSource var = "snapshot" driver = "com.mysql.jdbc.Driver" url = "jdbc:mysql://localhost:3306/mart"  user = "root"  password = "password"/>
-            <sql:query dataSource = "${snapshot}" var = "result">
-                select * from advertisement limit 10;
-            </sql:query>
-                    
-            
-                    
-                   
+        <sql:query dataSource = "${snapshot}" var = "result">
+            select * from advertisement where status='ACT' limit 10
+            <%--<sql:param value = "${to_page}" />--%>
+        </sql:query>
+        <sql:query dataSource = "${snapshot}" var = "ad_count_result">
+            select count(ad_category) as ad_count,ad_category from advertisement where status='ACT' group by ad_category;
+        </sql:query>  
+        <sql:query dataSource = "${snapshot}" var = "ad_count_all_result">
+            select count(*) as ad_count_all from advertisement where status='ACT';
+        </sql:query>       
+
+
+
         <nav class="navbar navbar-default navbar-fixed-top">
             <div class="container">
                 <div class="navbar-header">
@@ -54,26 +67,14 @@
                     </span>
                 </div>
                 <div id="navbar" class="navbar-collapse collapse">
-                    <form class="navbar-form navbar-right" action="/search.php" method="get">
+                    <form class="navbar-form navbar-right" action="searchServlet" method="post">
                         <div class="form-group">
-                            <input type="text" placeholder="search ads" class="form-control" name="q">
+                            <input type="text" placeholder="search ads" class="form-control" name="search" >
                             <button type="submit" class="btn btn-info">Search</button>
                             <span></span>
                         </div>
                     </form>
-                    <div class="list-group-top">
-                        <a href='/Automobiles/' title="Automobiles ads" class="list-group-item">  Automobiles (3)</a>
-                        <a href='/Business/' title="Business ads" class="list-group-item"><i class="fa fa-fw fa-Business" aria-hidden="true"></i> Business (59)</a>
-                        <a href='/Electronics/' title="Electronics ads" class="list-group-item"><i class="fa fa-fw fa-Electronics" aria-hidden="true"></i> Electronics (1)</a>
-                        <a href='/Employment/' title="Employment ads" class="list-group-item"><i class="fa fa-fw fa-Employment" aria-hidden="true"></i> Employment (31)</a>
-                        <a href='/General/' title="General ads" class="list-group-item"><i class="fa fa-fw fa-General" aria-hidden="true"></i> General (31)</a>
-                        <a href='/Mobile/' title="Mobile ads" class="list-group-item"><i class="fa fa-fw fa-Mobile" aria-hidden="true"></i> Mobile (4)</a>
-                        <a href='/Computer/' title="Computer ads" class="list-group-item"><i class="fa fa-fw fa-Computer" aria-hidden="true"></i> Computer (0)</a>
-                        <a href='/Personal/' title="Personal ads" class="list-group-item"><i class="fa fa-fw fa-Personal" aria-hidden="true"></i> Personal (2781)</a>
-                        <a href='/Real_Estate/' title="Real Estate ads" class="list-group-item"><i class="fa fa-fw fa-Real Estate" aria-hidden="true"></i> Real Estate (5)</a>
-                        <a href='/Marriage_Proposals/' title="Marriage Proposals ads" class="list-group-item"><i class="fa fa-fw fa-Marriage Proposals" aria-hidden="true"></i> Marriage Proposals (28)</a>
-                        <!--<a href='/Massage/' title="Massage ads" class="list-group-item"><i class="fa fa-fw fa-Massage" aria-hidden="true"></i> Massage (367)</a>-->
-                    </div>
+                    
                 </div>
             </div>
         </nav>
@@ -82,36 +83,21 @@
                 <div class="col-md-2">
                     <a href="/"><img src="${pageContext.request.contextPath}/images/logo.jpg" alt="Lanka Ads Logo" class="logo"></a>
                 </div>
-<!--                <div class="col-md-10">  // Suggestions
-                    <table style="width:100%">
-                        <tr height='20px'>
-                            <td><p class="menu01"><a href="/Massage/Head_Massage/">Head Massage</a></p></td>
-                            <td><p class="menu01"><a href="/Massage/Foot_Massage/">Foot Massage</a></p></td>
-                            <td><p class="menu01"><a href="/Massage/Full_Body_Massage/">Full Body Massage</a></p></td>
-                        </tr>
-                        <tr height='20px'>
-                            <td><p class="menu01"><a href="/Massage/Swedish_Massage/">Swedish Massage</a></p></td>
-                            <td><p class="menu01"><a href="/Massage/Thai_Massage/">Thai Massage</a></p></td>
-                            <td><p class="menu01"><a href="/Massage/Aromatherapy_Massage/">Aromatherapy Massage</a></p></td>
-                        </tr>
-                        <tr height='20px'>
-                            <td><p class="menu01"><a href="/Massage/Sports_Massage/">Sports Massage</a></p></td>
-                            <td><p class="menu01"><a href="/Massage/Deep_Tissue_Massage/">Deep Tissue Massage</a></p></td>
-                            <td><p class="menu01"><a href="/Massage/Nuru_Massage/">Nuru Massage</a></p></td>
-                        </tr>
-                        <tr height='20px'>
-                            <td><p class="menu01"><a href="/Massage/Couple_Message/">Couple Message</a></p></td>
-                            <td><p class="menu01"><a href="/Massage/VIP_Massage/">VIP Massage</a></p></td>
-                    </table>
-                </div>-->
             </div>
         </div>
         <div class="container">
             <div class="row content">
-                <div class="col-md-2 sidenav">
+                <div class="col-md-2 sidenav"> 
                     <div class="list-group">
-                        <a href='/Automobiles/' title="Automobiles ads" class="list-group-item"> Automobiles (3)</a>
-                        <a href='/Business/' title="Business ads" class="list-group-item"><i class="fa fa-fw fa-Business" aria-hidden="true"></i>Business (59)</a>
+                        <c:forEach var = "row" items = "${ad_count_result.rows}">
+                            <a href='/${row.ad_category}' title="${row.ad_category} ads" class="list-group-item"><i class="fa fa-fw fa-${row.ad_category}" aria-hidden="true"></i> ${row.ad_category}  (${row.ad_count})</a>
+                            
+                        </c:forEach>
+                            
+                            
+                            
+                        <a href="${pageContext.request.contextPath}/ad_view.jsp" title="Mobile ads" class="list-group-item"><i class="fa fa-mobile" aria-hidden="true"></i> Mobile </a>
+<!--                        <a href='/Business/' title="Business ads" class="list-group-item"><i class="fa fa-fw fa-Business" aria-hidden="true"></i>Business (59)</a>
                         <a href='/Electronics/' title="Electronics ads" class="list-group-item"><i class="fa fa-fw fa-Electronics" aria-hidden="true"></i>Electronics (1)</a>
                         <a href='/Employment/' title="Employment ads" class="list-group-item"><i class="fa fa-fw fa-Employment" aria-hidden="true"></i>Employment (31)</a>
                         <a href='/General/' title="General ads" class="list-group-item"><i class="fa fa-fw fa-General" aria-hidden="true"></i>General (31)</a>
@@ -119,72 +105,62 @@
                         <a href='/Computer/' title="Computer ads" class="list-group-item"><i class="fa fa-fw fa-Computer" aria-hidden="true"></i>Computer (0)</a>
                         <a href='/Personal/' title="Personal ads" class="list-group-item"><i class="fa fa-fw fa-Personal" aria-hidden="true"></i>Personal (2781)</a>
                         <a href='/Real_Estate/' title="Real Estate ads" class="list-group-item"><i class="fa fa-fw fa-Real Estate" aria-hidden="true"></i>Real Estate (5)</a>
-                        <a href='/Marriage_Proposals/' title="Marriage Proposals ads" class="list-group-item"><i class="fa fa-fw fa-Marriage Proposals" aria-hidden="true"></i>Marriage Proposals (28)</a>
+                        <a href='/Marriage_Proposals/' title="Marriage Proposals ads" class="list-group-item"><i class="fa fa-fw fa-Marriage Proposals" aria-hidden="true"></i>Marriage Proposals (28)</a>-->
                         <!--<a href='/Massage/' title="Massage ads" class="list-group-item"><i class="fa fa-fw fa-Massage" aria-hidden="true"></i>Massage (367)</a>-->
-                        <div align="center" class="left-add">
-                            <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-                            <ins class="adsbygoogle" style="display:inline-block;width:160px;height:600px" data-ad-client="ca-pub-3554298857405272" data-ad-slot="8553495964"></ins>
-                            <script>
-                                (adsbygoogle = window.adsbygoogle || []).push({});
-                            </script>
-                        </div>
+                         
                     </div>
                 </div>
                 <div class="col-md-10 ad-count">
                     <div class="col-md-12">
-                        <h3>  Live Ads &nbsp;(367) </h3>
+                        <c:forEach var = "row" items = "${ad_count_all_result.rows}">
+                        <h3>  Live Ads &nbsp;(${row.ad_count_all}) </h3>
                         <!--<h4> Hello <b><!%= request.getParameter("page")%></b>!</h4>-->
-                        
+                        </c:forEach>
                         <%
-                            try{
-                                if(request.getParameter("page").equals(null)){
+                            try {
+                                if (request.getParameter("page").equals(null)) {
 //                                out.println("<h4> Welcome to first page </h4>");
-                            }else{
+                                } else {
 //                                out.println("<h4> Page "+ request.getParameter("page") +"</h4>" );
-                            }
-                            }catch(Exception e){
+                                }
+                            } catch (Exception e) {
 //                                out.println("<h4> Welcome to first page </h4>");
                             }
-                    
-                    %>
-                    </div>
-                    
-                    
-<!--                    <div class="col-md-10 rounded-div" style="min-height: auto">
-                        <div align="center">
-                            <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 
-                            <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3554298857405272" data-ad-slot="9111899169" data-ad-format="auto"></ins>
-                            <script>
-                                (adsbygoogle = window.adsbygoogle || []).push({});
-                            </script>
-                        </div>
-                    </div>-->
-                    
-                    
-                     <c:forEach var = "row" items = "${result.rows}">
-                    <div class="col-md-5 rounded-div">
-                        <a href="/ad/New-Therapy--massage/${row.id}">
-                            <!--<h3>New Therapy massage</h3></a>-->
-                            <h3><c:out value = "${row.id} - ${row.ad_subject}" /></h3></a>
-                        <a href="/ad/New-Therapy--massage/${row.id}">
-                            <img src="${pageContext.request.contextPath}${row.ad_image}" alt="picture of Massage - Full Body Massage" class="img-thumbnail" height="100" width="100">
-                            <%--<c:out value = "${row.ad_image}" />--%>
-                        </a>
-                        <p style="overflow:hidden;">
-                            <c:out value = "${row.ad_content}" />
-                            <!--I'm boy. Full body massage,foot massages,head massage and relaxation filing massage. Only Griles and women. Hotel visits and home visits. Cll me......-->
-                            <br />
-                            <span class="adtime">9 hours ago</span>
+                        %>
                     </div>
+
+        <c:set var = "salary" scope = "session" value = "${2000*2}"/>
+        <c:out value = "${salary}"/>
+        
+
+                    <c:forEach var = "row" items = "${result.rows}">
+                        <div class="col-md-5 rounded-div">
+                            <a href="${pageContext.request.contextPath}/ad_view.jsp?id=${row.id}">
+                                <!--<h3>New Therapy massage</h3></a>-->
+                                <h3><c:out value = "${row.id} - ${row.ad_subject}" /></h3></a>
+                            <a href="${pageContext.request.contextPath}/ad_view.jsp?id=${row.id}">
+                                <img src="${pageContext.request.contextPath}${row.ad_image}" alt="picture of Massage - Full Body Massage" class="img-thumbnail" height="100" width="100">
+                                <%--<c:out value = "${row.ad_image}" />--%>
+                            </a>
+                            <p style="overflow:hidden;">
+                                ${row.ad_content}
+                                <%--<c:out value = "${row.ad_content}" />--%>
+                                <!--I'm boy. Full body massage,foot massages,head massage and relaxation filing massage. Only Griles and women. Hotel visits and home visits. Cll me......-->
+                                <br />
+                                <span class="adtime">9 hours ago</span>
+                        </div>
                     </c:forEach>
-                </div>   
-            <br/>
+                </div>
+            </div>
+            <br />
             <ul class="pager">
-                <li><a href="${pageContext.request.contextPath}?page=1"> Next 10 > </a></li>
+                <li><a href="?page=2">< Previous 10 </a></li>
+                <li><a href="?page=4"> Next 10 > </a></li>
             </ul>
             <hr />
         </div>
+
         <footer class="col-md-8 col-md-offset-2">
             <p style="float:right">&copy; 2018 Lanka Ads</p>
             <p class="footer-links">
@@ -195,8 +171,8 @@
                 <a href="/contact.php">Contact</a>
             </p>
         </footer> 
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+        <!--        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+                <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>-->
         <script type="text/javascript">
             var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
             document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
