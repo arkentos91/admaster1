@@ -9,7 +9,8 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>  Massage ads in Sri Lanka.</title>
+
+        <title>  Ads in Sri Lanka.</title>
         <link rel="shortcut icon" href="/favicon.ico">
         <meta name="keywords" content="Massage, Massage classifieds, Massage ads,  lanka ads, advertisement, ads, lanka, sri lanka, classifieds, advertisements, ikman, lanka classifieds, free classified ads, service, buy, sell ">
         <meta name="description" content="Massage, Massage classifieds, Massage ads,  Sri Lankan best classified ad site. Post your ads without any restrictions. ">
@@ -18,7 +19,7 @@
         <!--<link rel="stylesheet" href="/font-awesome-4.6.3/css/font-awesome.min.css">-->
         <!--<link rel="stylesheet" href="/style.css?10.1">-->
         <link href="${pageContext.request.contextPath}/style.css?10.1" rel="stylesheet" />
-        <link href="${pageContext.request.contextPath}/font-awesome-4.6.3/css/font-awesome.min.css" rel="stylesheet" />
+        <link href="${pageContext.request.contextPath}/font-awesome-4.6.3/css/font-awesome.min.css"/>
         <link href="${pageContext.request.contextPath}/bootstrap.min.css" rel="stylesheet" />
         <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
         <script>
@@ -46,10 +47,10 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="/">Lanka Ads</a>
+                    <a class="navbar-brand" href="/">Brand Goes Here</a>
                     &nbsp;&nbsp;
                     <span class="top-fb">
-                        <a class="btn btn-sm btn-info" href="/postAd.php">Post Your Ad</a>
+                        <a class="btn btn-sm btn-info" href="${pageContext.request.contextPath}/postAd.jsp">Post Your Ad</a>
                     </span>
                 </div>
                 <div id="navbar" class="navbar-collapse collapse">
@@ -71,7 +72,7 @@
                         <a href='/Personal/' title="Personal ads" class="list-group-item"><i class="fa fa-fw fa-Personal" aria-hidden="true"></i> Personal (2781)</a>
                         <a href='/Real_Estate/' title="Real Estate ads" class="list-group-item"><i class="fa fa-fw fa-Real Estate" aria-hidden="true"></i> Real Estate (5)</a>
                         <a href='/Marriage_Proposals/' title="Marriage Proposals ads" class="list-group-item"><i class="fa fa-fw fa-Marriage Proposals" aria-hidden="true"></i> Marriage Proposals (28)</a>
-                        <a href='/Massage/' title="Massage ads" class="list-group-item"><i class="fa fa-fw fa-Massage" aria-hidden="true"></i> Massage (367)</a>
+                        <!--<a href='/Massage/' title="Massage ads" class="list-group-item"><i class="fa fa-fw fa-Massage" aria-hidden="true"></i> Massage (367)</a>-->
                     </div>
                 </div>
             </div>
@@ -79,7 +80,7 @@
         <div class="jumbotron">
             <div class="container">
                 <div class="col-md-2">
-                    <a href="/"><img src="${pageContext.request.contextPath}/images/logo_2.png" alt="Lanka Ads Logo" class="logo"></a>
+                    <a href="/"><img src="${pageContext.request.contextPath}/images/logo.jpg" alt="Lanka Ads Logo" class="logo"></a>
                 </div>
 <!--                <div class="col-md-10">  // Suggestions
                     <table style="width:100%">
@@ -119,7 +120,7 @@
                         <a href='/Personal/' title="Personal ads" class="list-group-item"><i class="fa fa-fw fa-Personal" aria-hidden="true"></i>Personal (2781)</a>
                         <a href='/Real_Estate/' title="Real Estate ads" class="list-group-item"><i class="fa fa-fw fa-Real Estate" aria-hidden="true"></i>Real Estate (5)</a>
                         <a href='/Marriage_Proposals/' title="Marriage Proposals ads" class="list-group-item"><i class="fa fa-fw fa-Marriage Proposals" aria-hidden="true"></i>Marriage Proposals (28)</a>
-                        <a href='/Massage/' title="Massage ads" class="list-group-item"><i class="fa fa-fw fa-Massage" aria-hidden="true"></i>Massage (367)</a>
+                        <!--<a href='/Massage/' title="Massage ads" class="list-group-item"><i class="fa fa-fw fa-Massage" aria-hidden="true"></i>Massage (367)</a>-->
                         <div align="center" class="left-add">
                             <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
                             <ins class="adsbygoogle" style="display:inline-block;width:160px;height:600px" data-ad-client="ca-pub-3554298857405272" data-ad-slot="8553495964"></ins>
@@ -131,8 +132,23 @@
                 </div>
                 <div class="col-md-10 ad-count">
                     <div class="col-md-12">
-                        <h3> Massage - Live Ads &nbsp;(367)</h3>
+                        <h3>  Live Ads &nbsp;(367) </h3>
+                        <!--<h4> Hello <b><!%= request.getParameter("page")%></b>!</h4>-->
+                        
+                        <%
+                            try{
+                                if(request.getParameter("page").equals(null)){
+//                                out.println("<h4> Welcome to first page </h4>");
+                            }else{
+//                                out.println("<h4> Page "+ request.getParameter("page") +"</h4>" );
+                            }
+                            }catch(Exception e){
+//                                out.println("<h4> Welcome to first page </h4>");
+                            }
+                    
+                    %>
                     </div>
+                    
                     
 <!--                    <div class="col-md-10 rounded-div" style="min-height: auto">
                         <div align="center">
@@ -144,9 +160,6 @@
                             </script>
                         </div>
                     </div>-->
-                    c
-                    
-                    
                     
                     
                      <c:forEach var = "row" items = "${result.rows}">
@@ -165,109 +178,10 @@
                             <span class="adtime">9 hours ago</span>
                     </div>
                     </c:forEach>
-                     
-                    
-                            
-                    
-                    
-<!--                    
-                    <div class="col-md-5 rounded-div">
-                        <a href="/ad/B2B-massage/9390">
-                            <h3>B2B massage</h3></a>
-                        <p style="overflow:hidden;">Hi I'm hansi I'm 27yes old B2B massage and full Sarice VIP cyan Coll me.locasn kolluptiya bamalapitiya wallavatta arya $ 8000 0723696997don't miss coll me soon
-                            <br />
-                            <span class="adtime">5 hours ago</span>
-                    </div>
-                    
-                    <div class="col-md-5 rounded-div">
-                        <a href="/ad/oil-massage---hotel-visit/9360">
-                            <h3>oil massage - hotel visit</h3></a>
-                        <p style="overflow:hidden;">Genuine n friendly service provide by ayurvedic experienced matured female therapist. Colombo area hotel visit for ageing VIP's and foreigners. call 0764082700
-                            <br />
-                            <span class="adtime">10 hours ago</span>
-                    </div>
-                    <div class="col-md-5 rounded-div">
-                        <a href="/ad/B2B-massage/9359">
-                            <h3>B2B massage</h3></a>
-                        <a href="/ad/B2B-massage/9359">
-                            <img src="/images/ads/10000/400/9359_thumb.jpg" alt="picture of Massage - VIP Massage" class="img-thumbnail">
-                        </a>
-                        <p style="overflow:hidden;">I'm saduni 28 yas old B 2 B massage &amp; fill service 2avrs locasan wallavatta bambalapitiya VIP customer call me soon 0723691590
-                            <br />
-                            <span class="adtime">10 hours ago</span>
-                    </div>
-                    <div class="col-md-5 rounded-div">
-                        <a href="/ad/Vip-Service-Wellawaththa/9336">
-                            <h3>Vip Service Wellawaththa</h3></a>
-                        <a href="/ad/Vip-Service-Wellawaththa/9336">
-                            <img src="/images/ads/10000/400/9336_thumb.jpg" alt="picture of Massage - Full Body Massage" class="img-thumbnail">
-                        </a>
-                        <p style="overflow:hidden;">Hi I?M Nethu, Doing Body-To-Body And Full Service RS10000
-                            Age 22 Clean And Beautiful Good Service
-                            V.I.P Customers Only You Can come My Place...
-                            <br />
-                            <span class="adtime">12 hours ago</span>
-                    </div>
-                    <div class="col-md-5 rounded-div">
-                        <a href="/ad/B2B-massage/9332">
-                            <h3>B2B massage</h3></a>
-                        <p style="overflow:hidden;">Hey ladies am 30 good looking guy ...so am offering you an awesome b2b massage and every eassential needs for ladies and girls...you are not satisfied with just call me. I am doing a job on a abroad and I am in vacation well talented to make to satisfy all. can visit your place as well.. this is...
-                            <br />
-                            <span class="adtime">13 hours ago</span>
-                    </div>
-                    <div class="col-md-5 rounded-div">
-                        <a href="/ad/Boy-for-a-secret-relationship/9328">
-                            <h3>Boy for a secret relationship</h3></a>
-                        <a href="/ad/Boy-for-a-secret-relationship/9328">
-                            <img src="/images/ads/10000/400/9328_thumb.jpg" alt="picture of Massage - Full Body Massage" class="img-thumbnail">
-                        </a>
-                        <p style="overflow:hidden;">I am 27 yrs old Single, clean educated rich boy with a good profession. Need a girl age between 18- 35 for secret relationship with full privacy....
-                            <br />
-                            <span class="adtime">15 hours ago</span>
-                    </div>
-                    <div class="col-md-5 rounded-div">
-                        <a href="/ad/All-kind-of-body-treatment/9322">
-                            <h3>All kind of body treatment</h3></a>
-                        <p style="overflow:hidden;">Pls look this opportunity for you
-                            All type of body treatment by profetional beautician
-                            Ladies and gents both
-                            Location at Thalawathugoda
-                            Full body whitening scrub pack
-                            Full body ayurvedic scrub pack
-                            Thai massage
-                            Bear foot massage
-                            Steam bath
-                            Facial treatment
-                            Hair treatment
-                            Oil treatment...
-                            <br />
-                            <span class="adtime">23 hours ago</span>
-                    </div>
-                    <div class="col-md-5 rounded-div">
-                        <a href="/ad/Weekend-morning-wellness-for-ladies-and-couples---email-please/9313">
-                            <h3>Weekend morning wellness for ladies and couples - email please</h3></a>
-                        <p style="overflow:hidden;">Hi there!
-                            I'm Navid 29 years, I am providing morning sessions for ladies who are interested in starting thier weekends fresh!
-                            I am a working professional in engineering and have spent a good part of my life in sports and I now would like to share my massage services for anyone interested.
-                            I...
-                            <br />
-                            <span class="adtime">1 day ago</span>
-                    </div>
-                    <div class="col-md-5 rounded-div">
-                        <a href="/ad/Only-for-females.VIP-ladies,-young-man-available-for-escort-service./9308">
-                            <h3>Only for females.VIP ladies, young man available for escort service.</h3></a>
-                        <p style="overflow:hidden;">Only for females.VIP ladies, university students, office ladies etc...
-                            A friendly, easy going, educated, decent young man available for escort services. Limited number of appointments per week. full-service available that will be negotiated
-                            All services provided according to your need.
-                            Rs....
-                            <br />
-                            <span class="adtime">1 day ago</span>
-                    </div>-->
-                </div>
-            </div>
-            <br />
+                </div>   
+            <br/>
             <ul class="pager">
-                <li><a href="?page=1"> Next 10 > </a></li>
+                <li><a href="${pageContext.request.contextPath}?page=1"> Next 10 > </a></li>
             </ul>
             <hr />
         </div>
@@ -296,3 +210,4 @@
         </script>
     </body>
 </html>
+
