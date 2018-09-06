@@ -9,13 +9,26 @@
             30
         </session-timeout>
     </session-config>
-<!--    <servlet>
+    <servlet>
         <servlet-name>BusinessServlet</servlet-name>
         <jsp-file>/index.jsp</jsp-file>
     </servlet>
     <servlet-mapping>
         <servlet-name>BusinessServlet</servlet-name>
-        <url-pattern>/Business/index.jsp</url-pattern>
-        <url-pattern>/Automobiles/index.jsp</url-pattern>
-    </servlet-mapping>-->
+        <url-pattern>/Business/</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>BusinessServlet</servlet-name>
+        <url-pattern>/Automobiles/</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>BusinessServlet</servlet-name>
+        <url-pattern>/Employment/</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>BusinessServlet</servlet-name>
+        <url-pattern>/Mobile/</url-pattern>
+    </servlet-mapping>
+    
+  
 </web-app>

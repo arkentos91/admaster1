@@ -41,11 +41,14 @@
                 window.location = "${pageContext.request.contextPath}/LogoutUserLogin.action?";
             });
 
+        function test(){
+            alert(alert('${pageContext.request.contextPath}'));
+        } 
         </script>
 
 
     </head>
-    <body>
+    <body >
         <%
 //            String pages="0";
 //            try{

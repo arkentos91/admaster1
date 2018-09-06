@@ -61,7 +61,7 @@
                         <div class="form-group">
                             <input type="text" placeholder="search ads" class="form-control" name="q">
                             <button type="submit" class="btn btn-info">Search</button>
-                            <span>715944378</span>
+                            <span>Mobile No Here</span>
                             <a class="btn btn-success" href="${pageContext.request.contextPath}/lanka.jsp">My Ads</a>
                             <a class="btn btn-sm btn-warning" href="/logout.php">Logout</a>
                         </div>
@@ -103,7 +103,7 @@
                     
                     <div class="list-group">
                         <c:forEach var = "row" items = "${ad_count_result.rows}">
-                            <a href="/${row.ad_category}"  title="${row.ad_category} ads" class="list-group-item"><i class="fa fa-fw fa-${row.ad_category}" aria-hidden="true"></i> ${row.ad_category}  (${row.ad_count})</a>
+                            <a href="${pageContext.request.contextPath}/${row.ad_category}/"  title="${row.ad_category} ads" class="list-group-item"><i class="fa fa-fw fa-${row.ad_category}" aria-hidden="true"></i> ${row.ad_category}  (${row.ad_count})</a>
                             
                         </c:forEach> 
                         <a href="${pageContext.request.contextPath}/ad_view.jsp" title="Mobile ads" class="list-group-item"><i class="fa fa-mobile" aria-hidden="true"></i> Mobile </a>
