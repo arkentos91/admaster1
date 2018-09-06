@@ -1,5 +1,5 @@
 <%@ page import = "java.io.*,java.util.*,java.sql.*"%>
-<%@ page import = "javax.servlet.http.*,javax.servlet.*" %>
+<%@ page import = "javax.servlet.http.*,javax.servlet.*" %> 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix = "c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix = "sql"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -22,36 +22,64 @@
         <link href="${pageContext.request.contextPath}/font-awesome-4.6.3/css/font-awesome.min.css"/>
         <link href="${pageContext.request.contextPath}/bootstrap.min.css" rel="stylesheet" />
         <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-        <script>
+        <script type="text/javascript">
             (adsbygoogle = window.adsbygoogle || []).push({
                 google_ad_client: "ca-pub-3554298857405272",
                 enable_page_level_ads: true
             });
-             
+
+
+            $.subscribe('onclicksearch', function (event, data) {
+                $('#message').empty();
+
+                var nic_Search = $('#nic_Search').val();
+
+
+            });
+
+            $.subscribe('anyerrors', function (event, data) {
+                window.location = "${pageContext.request.contextPath}/LogoutUserLogin.action?";
+            });
+
         </script>
 
-      
+
     </head>
     <body>
         <%
 //            String pages="0";
 //            try{
-              String  pages= request.getParameter("page");
+            String pages = request.getParameter("page");
 //            }catch(Exception e){
 //                pages="0";
 //            } 
+
         %>
-        
-         <c:set var = "salary" scope = "session" value = "${2000*2}"/>
-         <c:set var = "from_page" value="<%= pages%>" />  
-         
+
+       
+        <c:set var = "salary" scope = "session" value = "${2000*2}"/>
+        <c:set var = "from_page" value="<%= pages%>" />  
+
         <c:set var = "from_p" scope = "session" value = "${from_page*10}"/>
-         
-         <fmt:parseNumber var="i" type="number" value="${from_p}" />
+
+        <fmt:parseNumber var="i" type="number" value="${from_p}" />
         <sql:setDataSource var = "snapshot" driver = "com.mysql.jdbc.Driver" url = "jdbc:mysql://localhost:3306/mart"  user = "root"  password = "password"/>
         <sql:query dataSource = "${snapshot}" var = "result">
             select * from advertisement where status='ACT'  limit ?,10
-            <sql:param  value="${i}" />
+            <c:choose>
+                <c:when test="${i lt 0}">
+                    <fmt:parseNumber var="i" type="number" value="0" />
+                    <sql:param  value="${i}" />
+                </c:when>
+                <c:when test="${i lt 1}">
+                     <c:set var="fpage" value="false"/>
+                      <sql:param  value="${i}" />
+                </c:when>
+                <c:otherwise>
+                     <c:set var="fpage" value="true"/>
+                    <sql:param  value="${i}" />
+                </c:otherwise>
+            </c:choose>
         </sql:query>
         <sql:query dataSource = "${snapshot}" var = "ad_count_result">
             select count(ad_category) as ad_count,ad_category from advertisement where status='ACT' group by ad_category;
@@ -85,7 +113,7 @@
                             <span></span>
                         </div>
                     </form>
-                    
+
                 </div>
             </div>
         </nav>
@@ -101,46 +129,48 @@
                 <div class="col-md-2 sidenav"> 
                     <div class="list-group">
                         <c:forEach var = "row" items = "${ad_count_result.rows}">
-                            <a href='${pageContext.request.contextPath}/${row.ad_category}' title="${row.ad_category} ads" class="list-group-item"><i class="fa fa-fw fa-${row.ad_category}" aria-hidden="true"></i> ${row.ad_category}  (${row.ad_count})</a>
-                                                
+                            <a href='${pageContext.request.contextPath}/${row.ad_category}/' title="${row.ad_category} ads" class="list-group-item"><i class="fa fa-fw fa-${row.ad_category}" aria-hidden="true"></i> ${row.ad_category}  (${row.ad_count})</a>
+
                         </c:forEach>
-                            
-                            
-                            
+
+
+
                         <a href="${pageContext.request.contextPath}/ad_view.jsp" title="Mobile ads" class="list-group-item"><i class="fa fa-mobile" aria-hidden="true"></i> Mobile </a>
-<!--                        <a href='/Business/' title="Business ads" class="list-group-item"><i class="fa fa-fw fa-Business" aria-hidden="true"></i>Business (59)</a>
-                        <a href='/Electronics/' title="Electronics ads" class="list-group-item"><i class="fa fa-fw fa-Electronics" aria-hidden="true"></i>Electronics (1)</a>
-                        <a href='/Employment/' title="Employment ads" class="list-group-item"><i class="fa fa-fw fa-Employment" aria-hidden="true"></i>Employment (31)</a>
-                        <a href='/General/' title="General ads" class="list-group-item"><i class="fa fa-fw fa-General" aria-hidden="true"></i>General (31)</a>
-                        <a href='/Mobile/' title="Mobile ads" class="list-group-item"><i class="fa fa-fw fa-Mobile" aria-hidden="true"></i>Mobile (4)</a>
-                        <a href='/Computer/' title="Computer ads" class="list-group-item"><i class="fa fa-fw fa-Computer" aria-hidden="true"></i>Computer (0)</a>
-                        <a href='/Personal/' title="Personal ads" class="list-group-item"><i class="fa fa-fw fa-Personal" aria-hidden="true"></i>Personal (2781)</a>
-                        <a href='/Real_Estate/' title="Real Estate ads" class="list-group-item"><i class="fa fa-fw fa-Real Estate" aria-hidden="true"></i>Real Estate (5)</a>
-                        <a href='/Marriage_Proposals/' title="Marriage Proposals ads" class="list-group-item"><i class="fa fa-fw fa-Marriage Proposals" aria-hidden="true"></i>Marriage Proposals (28)</a>-->
+                        <!--                        <a href='/Business/' title="Business ads" class="list-group-item"><i class="fa fa-fw fa-Business" aria-hidden="true"></i>Business (59)</a>
+                                                <a href='/Electronics/' title="Electronics ads" class="list-group-item"><i class="fa fa-fw fa-Electronics" aria-hidden="true"></i>Electronics (1)</a>
+                                                <a href='/Employment/' title="Employment ads" class="list-group-item"><i class="fa fa-fw fa-Employment" aria-hidden="true"></i>Employment (31)</a>
+                                                <a href='/General/' title="General ads" class="list-group-item"><i class="fa fa-fw fa-General" aria-hidden="true"></i>General (31)</a>
+                                                <a href='/Mobile/' title="Mobile ads" class="list-group-item"><i class="fa fa-fw fa-Mobile" aria-hidden="true"></i>Mobile (4)</a>
+                                                <a href='/Computer/' title="Computer ads" class="list-group-item"><i class="fa fa-fw fa-Computer" aria-hidden="true"></i>Computer (0)</a>
+                                                <a href='/Personal/' title="Personal ads" class="list-group-item"><i class="fa fa-fw fa-Personal" aria-hidden="true"></i>Personal (2781)</a>
+                                                <a href='/Real_Estate/' title="Real Estate ads" class="list-group-item"><i class="fa fa-fw fa-Real Estate" aria-hidden="true"></i>Real Estate (5)</a>
+                                                <a href='/Marriage_Proposals/' title="Marriage Proposals ads" class="list-group-item"><i class="fa fa-fw fa-Marriage Proposals" aria-hidden="true"></i>Marriage Proposals (28)</a>-->
                         <!--<a href='/Massage/' title="Massage ads" class="list-group-item"><i class="fa fa-fw fa-Massage" aria-hidden="true"></i>Massage (367)</a>-->
-                         
+
                     </div>
                 </div>
                 <div class="col-md-10 ad-count">
                     <div class="col-md-12">
                         <c:forEach var = "row" items = "${ad_count_all_result.rows}">
-                        <h3>  Live Ads &nbsp;(${row.ad_count_all}) </h3>
-                        <!--<h4> Hello <b><!%= request.getParameter("page")%></b>!</h4>-->
+                            <h3>  Live Ads &nbsp;(${row.ad_count_all}) </h3>
+                            <!--<h4> Hello <b><!%= request.getParameter("page")%></b>!</h4>-->
                         </c:forEach>
                         <%
                             try {
                                 if (request.getParameter("page").equals(null)) {
 //                                out.println("<h4> Welcome to first page </h4>");
+
                                 } else {
 //                                out.println("<h4> Page "+ request.getParameter("page") +"</h4>" );
                                 }
                             } catch (Exception e) {
 //                                out.println("<h4> Welcome to first page </h4>");
+
                             }
 
                         %>
                     </div>
- 
+
 
                     <c:forEach var = "row" items = "${result.rows}">
                         <div class="col-md-5 rounded-div">
@@ -163,9 +193,10 @@
             </div>
             <br />
             <ul class="pager">
-                <li><a href="<%=request.getContextPath()%>/?page=${from_page-1}" >< Previous 10 </a></li>
-               
-               <li><a href="<%=request.getContextPath()%>/?page=${from_page+1}" > Next 10 ></a></li>
+                <c:if test="${fpage eq true}">
+                     <li><a href="<%=request.getContextPath()%>/?page=${from_page-1}"  >< Previous 10 </a></li>
+                </c:if>
+                <li><a href="<%=request.getContextPath()%>/?page=${from_page+1}" > Next 10 ></a></li>
             </ul>
             <hr />
         </div>
