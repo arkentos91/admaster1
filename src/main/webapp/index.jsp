@@ -50,7 +50,7 @@
          <fmt:parseNumber var="i" type="number" value="${from_p}" />
         <sql:setDataSource var = "snapshot" driver = "com.mysql.jdbc.Driver" url = "jdbc:mysql://localhost:3306/mart"  user = "root"  password = "password"/>
         <sql:query dataSource = "${snapshot}" var = "result">
-            select * from advertisement where status='ACT' limit ?,10
+            select * from advertisement where status='ACT'  limit ?,10
             <sql:param  value="${i}" />
         </sql:query>
         <sql:query dataSource = "${snapshot}" var = "ad_count_result">
@@ -101,7 +101,7 @@
                 <div class="col-md-2 sidenav"> 
                     <div class="list-group">
                         <c:forEach var = "row" items = "${ad_count_result.rows}">
-                            <a href='/${row.ad_category}' title="${row.ad_category} ads" class="list-group-item"><i class="fa fa-fw fa-${row.ad_category}" aria-hidden="true"></i> ${row.ad_category}  (${row.ad_count})</a>
+                            <a href='${pageContext.request.contextPath}/${row.ad_category}' title="${row.ad_category} ads" class="list-group-item"><i class="fa fa-fw fa-${row.ad_category}" aria-hidden="true"></i> ${row.ad_category}  (${row.ad_count})</a>
                                                 
                         </c:forEach>
                             
