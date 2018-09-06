@@ -30,10 +30,10 @@
     </head>
     <body>
         <sql:setDataSource var = "snapshot" driver = "com.mysql.jdbc.Driver" url = "jdbc:mysql://localhost:3306/mart"  user = "root"  password = "password"/>
-            
-                
-     
-     <nav class="navbar navbar-default navbar-fixed-top">
+
+
+
+        <nav class="navbar navbar-default navbar-fixed-top">
             <div class="container">
                 <div class="navbar-header">
                     <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -42,8 +42,8 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="/">Brand Goes Here</a>
-                   
+                    <a class="navbar-brand" href="${pageContext.request.contextPath}">Brand Goes Here</a>
+
                 </div>
                 <div id="navbar" class="navbar-collapse collapse">
                     <form class="navbar-form navbar-right" action="/search.php" method="get">
@@ -69,7 +69,7 @@
                 </div>
             </div>
         </nav> 
-                
+
         <div class="jumbotron">
             <div class="container">
                 <div class="col-md-2">
@@ -78,17 +78,27 @@
 
             </div>
         </div> 
-                
-        <form class="navbar-form navbar-left" action="/search.php" method="get">
+        <div class="container">
+            <div class="row content">
+                <div class="col-md-2 sidenav">
+                    <div class="list-group">
+                        
+                    </div>
+                </div>        
+                <div class="col-md-10 rounded-div add-full-div">    
+                    <form class="navbar-form navbar-left" action="/search.php" method="get">
                         <div class="form-group" id="addpost">
-                            <input type="text" placeholder="Subject" class="form-control" name="q">
-                            <textarea name="comment" form="addpost" class="form-control" placeholder="Content" ></textarea> 
-                            
+                            <label>Subject </label>&nbsp;<input type="text" placeholder="Subject" class="form-control" name="subject"><br> <br>
+                            <label>Content </label>&nbsp;<textarea name="content" rows="4" cols="50" form="addpost" class="form-control" placeholder="Content" ></textarea> <br>
+
                             <button type="submit" class="btn btn-info">Post Now</button>
                             <sql:update dataSource = "${snapshot}" var = "result">
                                 update advertisement set status='ACT' where status='ACT';
                             </sql:update>
                         </div>
-         </form>        
+                    </form>  
+                </div>    
+            </div>
+        </div>
     </body>
 </html>

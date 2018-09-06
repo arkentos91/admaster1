@@ -50,10 +50,10 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="/">Lanka Ads</a>
+                    <a class="navbar-brand" href="${pageContext.request.contextPath}">Brand Goes Here</a>
                     &nbsp;&nbsp;
                     <span class="top-fb">
-                        <a class="btn btn-sm btn-info" href="/postAd.php">Post Your Ad</a>
+                        <a class="btn btn-sm btn-info" href="${pageContext.request.contextPath}/postAd.jsp">Post Your Ad</a>
                     </span>
                 </div>
                 <div id="navbar" class="navbar-collapse collapse">

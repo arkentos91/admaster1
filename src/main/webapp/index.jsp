@@ -2,7 +2,7 @@
 <%@ page import = "javax.servlet.http.*,javax.servlet.*" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix = "c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix = "sql"%>
-
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="en">
     <head> 
@@ -10,7 +10,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>  Ads in Sri Lanka.</title>
+        <title></title>
         <link rel="shortcut icon" href="/favicon.ico">
         <meta name="keywords" content="Massage, Massage classifieds, Massage ads,  lanka ads, advertisement, ads, lanka, sri lanka, classifieds, advertisements, ikman, lanka classifieds, free classified ads, service, buy, sell ">
         <meta name="description" content="Massage, Massage classifieds, Massage ads,  Sri Lankan best classified ad site. Post your ads without any restrictions. ">
@@ -27,20 +27,31 @@
                 google_ad_client: "ca-pub-3554298857405272",
                 enable_page_level_ads: true
             });
-            
+             
         </script>
-        
+
       
     </head>
     <body>
-         <!--select * from advertisement where status='ACT' limit <!%=request.getParameter("page")%>;-->
- 
-         <c:set var = "from_page" value = "0" /> 
-         <c:set var = "to_page" value = "30"/>
+        <%
+//            String pages="0";
+//            try{
+              String  pages= request.getParameter("page");
+//            }catch(Exception e){
+//                pages="0";
+//            } 
+        %>
+        
+         <c:set var = "salary" scope = "session" value = "${2000*2}"/>
+         <c:set var = "from_page" value="<%= pages%>" />  
+         
+        <c:set var = "from_p" scope = "session" value = "${from_page*10}"/>
+         
+         <fmt:parseNumber var="i" type="number" value="${from_p}" />
         <sql:setDataSource var = "snapshot" driver = "com.mysql.jdbc.Driver" url = "jdbc:mysql://localhost:3306/mart"  user = "root"  password = "password"/>
         <sql:query dataSource = "${snapshot}" var = "result">
-            select * from advertisement where status='ACT' limit 10
-            <%--<sql:param value = "${to_page}" />--%>
+            select * from advertisement where status='ACT' limit ?,10
+            <sql:param  value="${i}" />
         </sql:query>
         <sql:query dataSource = "${snapshot}" var = "ad_count_result">
             select count(ad_category) as ad_count,ad_category from advertisement where status='ACT' group by ad_category;
@@ -60,7 +71,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="/">Brand Goes Here</a>
+                    <a class="navbar-brand" href="${pageContext.request.contextPath}">Brand Goes Here</a>
                     &nbsp;&nbsp;
                     <span class="top-fb">
                         <a class="btn btn-sm btn-info" href="${pageContext.request.contextPath}/postAd.jsp">Post Your Ad</a>
@@ -91,7 +102,7 @@
                     <div class="list-group">
                         <c:forEach var = "row" items = "${ad_count_result.rows}">
                             <a href='/${row.ad_category}' title="${row.ad_category} ads" class="list-group-item"><i class="fa fa-fw fa-${row.ad_category}" aria-hidden="true"></i> ${row.ad_category}  (${row.ad_count})</a>
-                            
+                                                
                         </c:forEach>
                             
                             
@@ -129,10 +140,7 @@
 
                         %>
                     </div>
-
-        <c:set var = "salary" scope = "session" value = "${2000*2}"/>
-        <c:out value = "${salary}"/>
-        
+ 
 
                     <c:forEach var = "row" items = "${result.rows}">
                         <div class="col-md-5 rounded-div">
@@ -155,8 +163,9 @@
             </div>
             <br />
             <ul class="pager">
-                <li><a href="?page=2">< Previous 10 </a></li>
-                <li><a href="?page=4"> Next 10 > </a></li>
+                <li><a href="<%=request.getContextPath()%>/?page=${from_page-1}" >< Previous 10 </a></li>
+               
+               <li><a href="<%=request.getContextPath()%>/?page=${from_page+1}" > Next 10 ></a></li>
             </ul>
             <hr />
         </div>
@@ -168,7 +177,7 @@
                 <a href="/postAd.php">Post Ad</a>
                 <a href="/terms.php">Terms & Conditions</a>
                 <a href="/privacy-policy.php">Privacy Policy</a>
-                <a href="/contact.php">Contact</a>
+                <a href="${pageContext.request.contextPath}/contactus.jsp">Contact</a>
             </p>
         </footer> 
         <!--        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
