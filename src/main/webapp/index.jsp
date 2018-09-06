@@ -27,25 +27,35 @@
                 google_ad_client: "ca-pub-3554298857405272",
                 enable_page_level_ads: true
             });
-
-
             $.subscribe('onclicksearch', function (event, data) {
                 $('#message').empty();
-
                 var nic_Search = $('#nic_Search').val();
-
-
             });
-
             $.subscribe('anyerrors', function (event, data) {
                 window.location = "${pageContext.request.contextPath}/LogoutUserLogin.action?";
             });
+            function testf(categ) {
 
-        function test(){
-            alert(alert('${pageContext.request.contextPath}'));
-        } 
-        </script>
+                alert(categ);
+                alert("${pageContext.request.contextPath}/" + categ + "/");
+                $.ajax({
+                    type: "get",
+                    url: "${pageContext.request.contextPath}/" + categ + "/",
+                    data: {category: categ},
+                    success: function (res) {
+                        if (res == 1) {
+                            alert("Data Found!");
+                        } else {
+                            alert("Data Not Found!");
+                        }
 
+                    }
+                });
+            }
+
+
+
+        </script> 
 
     </head>
     <body >
@@ -53,33 +63,40 @@
 //            String pages="0";
 //            try{
             String pages = request.getParameter("page");
+            String category = request.getParameter("category");
+
 //            }catch(Exception e){
 //                pages="0";
 //            } 
 
         %>
 
-       
+
         <c:set var = "salary" scope = "session" value = "${2000*2}"/>
-        <c:set var = "from_page" value="<%= pages%>" />  
+        <c:set var = "c_page" value="<%= pages%>" />  
+        <c:set var = "c_category"  value="<%= category%>"  />  
 
-        <c:set var = "from_p" scope = "session" value = "${from_page*10}"/>
 
+        <c:set var = "from_p" scope = "session" value = "${c_page*10}"/>
         <fmt:parseNumber var="i" type="number" value="${from_p}" />
+
         <sql:setDataSource var = "snapshot" driver = "com.mysql.jdbc.Driver" url = "jdbc:mysql://localhost:3306/mart"  user = "root"  password = "password"/>
         <sql:query dataSource = "${snapshot}" var = "result">
             select * from advertisement where status='ACT'  limit ?,10
             <c:choose>
                 <c:when test="${i lt 0}">
                     <fmt:parseNumber var="i" type="number" value="0" />
+                    <%--<sql:param  value="${c_category}" />--%>
                     <sql:param  value="${i}" />
                 </c:when>
                 <c:when test="${i lt 1}">
-                     <c:set var="fpage" value="false"/>
-                      <sql:param  value="${i}" />
+                    <c:set var="fpage" value="false"/>
+                    <%--<sql:param  value="${c_category}" />--%>
+                    <sql:param  value="${i}" />
                 </c:when>
                 <c:otherwise>
-                     <c:set var="fpage" value="true"/>
+                    <c:set var="fpage" value="true"/>
+                    <%--<sql:param  value="${c_category}" />--%>
                     <sql:param  value="${i}" />
                 </c:otherwise>
             </c:choose>
@@ -132,7 +149,7 @@
                 <div class="col-md-2 sidenav"> 
                     <div class="list-group">
                         <c:forEach var = "row" items = "${ad_count_result.rows}">
-                            <a href='${pageContext.request.contextPath}/${row.ad_category}/' title="${row.ad_category} ads" class="list-group-item"><i class="fa fa-fw fa-${row.ad_category}" aria-hidden="true"></i> ${row.ad_category}  (${row.ad_count})</a>
+                            <a href='${pageContext.request.contextPath}/${row.ad_category}/'  onclick="testf('${row.ad_category}')" title="${row.ad_category} ads" class="list-group-item"><i class="fa fa-fw fa-${row.ad_category}" aria-hidden="true"></i> ${row.ad_category}  (${row.ad_count})</a>
 
                         </c:forEach>
 
@@ -173,13 +190,15 @@
 
                         %>
                     </div>
-
-
+                    <div id="valueHolderId">${someValue}</div>
+                    <c:out value="${i}"/> 
+                    <c:out value="${categ}" />  
                     <c:forEach var = "row" items = "${result.rows}">
                         <div class="col-md-5 rounded-div">
                             <a href="${pageContext.request.contextPath}/ad_view.jsp?id=${row.id}">
                                 <!--<h3>New Therapy massage</h3></a>-->
                                 <h3><c:out value = "${row.id} - ${row.ad_subject}" /></h3></a>
+
                             <a href="${pageContext.request.contextPath}/ad_view.jsp?id=${row.id}">
                                 <img src="${pageContext.request.contextPath}${row.ad_image}" alt="picture of Massage - Full Body Massage" class="img-thumbnail" height="100" width="100">
                                 <%--<c:out value = "${row.ad_image}" />--%>
@@ -197,9 +216,9 @@
             <br />
             <ul class="pager">
                 <c:if test="${fpage eq true}">
-                     <li><a href="<%=request.getContextPath()%>/?page=${from_page-1}"  >< Previous 10 </a></li>
-                </c:if>
-                <li><a href="<%=request.getContextPath()%>/?page=${from_page+1}" > Next 10 ></a></li>
+                    <li><a href="<%=request.getContextPath()%>/?page=${c_page-1}"  >< Previous 10 </a></li>
+                    </c:if>
+                <li><a href="<%=request.getContextPath()%>/?page=${c_page+1}" > Next 10 ></a></li>
             </ul>
             <hr />
         </div>
@@ -218,8 +237,7 @@
                 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>-->
         <script type="text/javascript">
             var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
-            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
-        </script>
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));</script>
         <script type="text/javascript">
             try {
                 var pageTracker = _gat._getTracker("UA-2923101-5");
