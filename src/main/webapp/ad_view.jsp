@@ -102,12 +102,13 @@
                     
                     
                     <div class="list-group">
+                       <a href='${pageContext.request.contextPath}/ad.jsp?category=All'  title="All ads" class="list-group-item"><i class="fa fa-fw fa-${row.ad_category}" aria-hidden="true"></i> All Ads (${row.ad_count})</a>
+                             
                         <c:forEach var = "row" items = "${ad_count_result.rows}">
-                            <a href="${pageContext.request.contextPath}/${row.ad_category}/"  title="${row.ad_category} ads" class="list-group-item"><i class="fa fa-fw fa-${row.ad_category}" aria-hidden="true"></i> ${row.ad_category}  (${row.ad_count})</a>
-                            
-                        </c:forEach> 
-                        <a href="${pageContext.request.contextPath}/ad_view.jsp" title="Mobile ads" class="list-group-item"><i class="fa fa-mobile" aria-hidden="true"></i> Mobile </a>
- 
+                            <a href='${pageContext.request.contextPath}/ad.jsp?category=${row.ad_category}'  title="${row.ad_category} ads" class="list-group-item"><i class="fa fa-fw fa-${row.ad_category}" aria-hidden="true"></i> ${row.ad_category}  (${row.ad_count})</a>
+                                 
+                        </c:forEach>
+                        
                     </div>
                 </div>
                 <div class="col-md-10 rounded-div add-full-div">
