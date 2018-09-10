@@ -20,6 +20,7 @@
         <link href="${pageContext.request.contextPath}/font-awesome-4.6.3/css/font-awesome.min.css"/>
         <link href="${pageContext.request.contextPath}/bootstrap.min.css" rel="stylesheet" />
         <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script src="${pageContext.request.contextPath}/font-awesome-4.6.3/js/timeago.js" type="text/javascript"></script>
         <script type="text/javascript">
             (adsbygoogle = window.adsbygoogle || []).push({
                 google_ad_client: "ca-pub-3554298857405272",
@@ -32,6 +33,10 @@
             $.subscribe('anyerrors', function (event, data) {
                 window.location = "${pageContext.request.contextPath}/LogoutUserLogin.action?";
             });
+            
+            function gg(){
+                
+            }
               
         </script> 
 
@@ -41,36 +46,55 @@
  
             String pages = request.getParameter("page");
             String category = request.getParameter("category");
- 
-
+            String  search = request.getParameter("search");
+            String  query,count_query = "";
+            try{
+            if (search.isEmpty()){
+                search="1=1";
+                query="select * from advertisement where status='ACT' and ( ? ) limit ?,10";
+                count_query ="select count(*) as ad_count_all from advertisement where status='ACT'";
+            }else{
+//                search= "ad_subject like '%"+search+"%' or ad_content like '%"+search+"%'";
+                search= "%"+search+"%";
+                query="select * from advertisement where status='ACT' and (ad_content like ? or ad_subject like '"+search+"' ) limit ?,10";
+                count_query ="select count(*) as ad_count_all from advertisement where status='ACT' and (ad_content like '"+search+"' or ad_subject like '"+search+"' )";
+            }
+            }catch(Exception e){
+                e.printStackTrace();
+                search="1=1";
+                query="select * from advertisement where status='ACT' and ( ? ) limit ?,10";
+                count_query ="select count(*) as ad_count_all from advertisement where status='ACT'";
+            }  
+            System.out.print(search);
         %>
 
 
         <c:set var = "salary" scope = "session" value = "${2000*2}"/>
         <c:set var = "c_page" value="<%= pages%>" />  
-        <c:set var = "c_category"  value="<%= category%>"  />  
-
-
+        <c:set var = "c_category"  value="<%= category%>"  />   
+        <c:set var = "c_search"  value="<%= search%>"  />   
+        <c:set var = "query"  value="<%= query%>"  />   
+        <c:set var = "count_query"  value="<%= count_query%>"  />   
+ 
         <c:set var = "from_p" scope = "session" value = "${c_page*10}"/>
         <fmt:parseNumber var="i" type="number" value="${from_p}" />
-
         <sql:setDataSource var = "snapshot" driver = "com.mysql.jdbc.Driver" url = "jdbc:mysql://localhost:3306/mart"  user = "root"  password = "password"/>
         <sql:query dataSource = "${snapshot}" var = "result">
-            select * from advertisement where status='ACT'  limit ?,10
+            ${query}
             <c:choose>
                 <c:when test="${i lt 0}">
                     <fmt:parseNumber var="i" type="number" value="0" />
-                    <%--<sql:param  value="${c_category}" />--%>
+                    <sql:param  value="${c_search}" />
                     <sql:param  value="${i}" />
                 </c:when>
                 <c:when test="${i lt 1}">
                     <c:set var="fpage" value="false"/>
-                    <%--<sql:param  value="${c_category}" />--%>
+                    <sql:param  value="${c_search}" />
                     <sql:param  value="${i}" />
                 </c:when>
                 <c:otherwise>
                     <c:set var="fpage" value="true"/>
-                    <%--<sql:param  value="${c_category}" />--%>
+                    <sql:param  value="${c_search}" />
                     <sql:param  value="${i}" />
                 </c:otherwise>
             </c:choose>
@@ -79,7 +103,7 @@
             select count(ad_category) as ad_count,ad_category from advertisement where status='ACT' group by ad_category;
         </sql:query>  
         <sql:query dataSource = "${snapshot}" var = "ad_count_all_result">
-            select count(*) as ad_count_all from advertisement where status='ACT';
+           ${count_query}
         </sql:query>       
 
 
@@ -100,30 +124,29 @@
                     </span>
                 </div>
                 <div id="navbar" class="navbar-collapse collapse">
-                    <form class="navbar-form navbar-right" action="searchServlet" method="post">
+                    <form class="navbar-form navbar-right" action="searchServlet" method="post" name="searchform">
                         <div class="form-group">
                             <input type="text" placeholder="search ads" class="form-control" name="search" >
                             <button type="submit" class="btn btn-info">Search</button>
                             <span></span>
                         </div>
                     </form>
-
                 </div>
             </div>
         </nav>
         <div class="jumbotron">
             <div class="container">
                 <div class="col-md-2">
-                    <a href="/"><img src="${pageContext.request.contextPath}/images/logo.jpg" alt="Lanka Ads Logo" class="logo"></a>
+                    <a href="index.jsp"><img src="${pageContext.request.contextPath}/images/logo.jpg" alt="Lanka Ads Logo" class="logo"></a>
                 </div>
             </div>
         </div>
+                
         <div class="container">
             <div class="row content">
                 <div class="col-md-2 sidenav"> 
                     <div class="list-group">
                         <a href='${pageContext.request.contextPath}/ad.jsp?category=All'  title="All ads" class="list-group-item"><i class="fa fa-fw fa-${row.ad_category}" aria-hidden="true"></i> All Ads</a>
-
                         <c:forEach var = "row" items = "${ad_count_result.rows}">
                             <!--<a href='${pageContext.request.contextPath}/${row.ad_category}/'  onclick="testf('${row.ad_category}')" title="${row.ad_category} ads" class="list-group-item"><i class="fa fa-fw fa-${row.ad_category}" aria-hidden="true"></i> ${row.ad_category}  (${row.ad_count})</a>-->
                             <a href='${pageContext.request.contextPath}/ad.jsp?category=${row.ad_category}' title="${row.ad_category} ads" class="list-group-item"><i class="fa fa-fw fa-${row.ad_category}" aria-hidden="true"></i> ${row.ad_category}  (${row.ad_count})</a>
@@ -154,8 +177,11 @@
                         %>
                     </div>
                     <div id="valueHolderId">${someValue}</div>
-                    <c:out value="${i}"/> 
-                    <c:out value="${categ}" />  
+                    <%--<c:out value="${i}"/>--%> 
+                    <%--<c:out value="${query}"/>--%>  
+                    <%--<c:out value="${c_search}"/>--%>  
+                    
+                     
                     <c:forEach var = "row" items = "${result.rows}">
                         <div class="col-md-5 rounded-div">
                             <a href="${pageContext.request.contextPath}/ad_view.jsp?id=${row.id}">

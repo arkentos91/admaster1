@@ -115,7 +115,7 @@
                     <c:forEach var = "row" items = "${result.rows}">
                     <h3>${row.ad_subject}</h3>
                     <p class="classifiedTitle" align="right">
-                        <a href="/Massage">Massage</a> -> <a href="/Massage/Head_Massage/">Head Massage</a>
+                        <a href="${pageContext.request.contextPath}/ad.jsp?category=${row.ad_category}">${row.ad_category}</a>
                     </p><br />
                      
                     <p style="overflow:hidden;"><span class="classifiedText">${row.ad_content}</span></p>

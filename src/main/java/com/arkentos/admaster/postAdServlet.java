@@ -7,8 +7,6 @@ package com.arkentos.admaster;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import javax.servlet.FilterChain;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -19,8 +17,8 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author JayanaI
  */
-@WebServlet(name = "searchServlet", urlPatterns = {"/searchServlet"})
-public class searchServlet extends HttpServlet {
+@WebServlet(name = "postAdServlet", urlPatterns = {"/postAdServlet"})
+public class postAdServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -31,29 +29,24 @@ public class searchServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException {
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            String search = request.getParameter("search");  
+            String role = request.getParameter("role");  
+            String subject = request.getParameter("subject");  
+            String content = request.getParameter("content");  
+            String file = request.getParameter("file");  
             System.out.println("-----------------------");
-            System.out.println("seached >"+search);
-            if (search.isEmpty()){
-                search="1=1";
-            }else{
-//                search= "ad_subject like '%"+search+"%' or ad_content like '%"+search+"%'";
-//                search= "ad_content like '%"+search+"%'";
-                search=search;
-            }
-            
-            System.out.println("return >"+search);
-            request.setAttribute("c_search",search);
-            request.getRequestDispatcher("index.jsp").forward(request, response); 
-   
+            System.out.println("role got >"+role);
+            System.out.println("subject got >"+subject);
+            System.out.println("content got >"+content);
+            System.out.println("file got >"+file); 
  
-            
+             
+//            request.setAttribute("role",role);
+            request.getRequestDispatcher("postAd.jsp").forward(request, response); 
+   
         }
-        
-         
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
