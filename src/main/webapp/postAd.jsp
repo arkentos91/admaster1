@@ -74,7 +74,7 @@
                     </div>
                 </div>        
                 <div class="col-md-10 rounded-div">    
-                    <form class="navbar-form navbar-left" action="postAdServlet" method="get" id="addpost">
+                    <form class="navbar-form navbar-left" action="postAdServlet" method="post" id="addpost">
                         <div class="form-group" id="addpost">
                             <label>Category </label>&nbsp;
                             <select name='role' class="form-control" >

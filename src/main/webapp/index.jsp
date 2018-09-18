@@ -21,24 +21,7 @@
         <link href="${pageContext.request.contextPath}/bootstrap.min.css" rel="stylesheet" />
         <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
         <script src="${pageContext.request.contextPath}/font-awesome-4.6.3/js/timeago.js" type="text/javascript"></script>
-        <script type="text/javascript">
-            (adsbygoogle = window.adsbygoogle || []).push({
-                google_ad_client: "ca-pub-3554298857405272",
-                enable_page_level_ads: true
-            });
-            $.subscribe('onclicksearch', function (event, data) {
-                $('#message').empty();
-                var nic_Search = $('#nic_Search').val();
-            });
-            $.subscribe('anyerrors', function (event, data) {
-                window.location = "${pageContext.request.contextPath}/LogoutUserLogin.action?";
-            });
-            
-            function gg(){
-                
-            }
-              
-        </script> 
+        
 
     </head>
     <body >
@@ -180,13 +163,15 @@
                     <%--<c:out value="${i}"/>--%> 
                     <%--<c:out value="${query}"/>--%>  
                     <%--<c:out value="${c_search}"/>--%>  
+                    <abbr class="timeago" title="19 March 2013 04:51:33 PM"></abbr>
+                    
                     
                      
                     <c:forEach var = "row" items = "${result.rows}">
                         <div class="col-md-5 rounded-div">
                             <a href="${pageContext.request.contextPath}/ad_view.jsp?id=${row.id}">
                                 <!--<h3>New Therapy massage</h3></a>-->
-                                <h3><c:out value = "${row.id} - ${row.ad_subject}" /></h3></a>
+                                <h3><c:out value = "${row.id} - ${row.ad_subject} - ${row.ad_category}" /></h3></a>
 
                             <a href="${pageContext.request.contextPath}/ad_view.jsp?id=${row.id}">
                                 <img src="${pageContext.request.contextPath}${row.ad_image}" alt="picture of Massage - Full Body Massage" class="img-thumbnail" height="100" width="100">

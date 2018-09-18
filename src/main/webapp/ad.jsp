@@ -195,7 +195,7 @@
                     <c:forEach var = "row" items = "${result.rows}">
                         <div class="col-md-5 rounded-div">
                             <a href="${pageContext.request.contextPath}/ad_view.jsp?id=${row.id}"> 
-                                <h3><c:out value = "${row.id} - ${row.ad_subject}" /></h3></a>
+                                <h3><c:out value = "${row.id} - ${row.ad_subject} - ${row.ad_category}" /></h3></a>
 
                             <a href="${pageContext.request.contextPath}/ad_view.jsp?id=${row.id}">
                                 <img src="${pageContext.request.contextPath}${row.ad_image}" alt="picture of Massage - Full Body Massage" class="img-thumbnail" height="100" width="100">
