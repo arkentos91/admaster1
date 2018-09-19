@@ -1,7 +1,16 @@
+<%@page import="org.apache.commons.fileupload.servlet.ServletFileUpload"%>
+<%@page import="org.apache.commons.fileupload.disk.DiskFileItemFactory"%>
 <%@ page import = "java.io.*,java.util.*,java.sql.*"%>
 <%@ page import = "javax.servlet.http.*,javax.servlet.*" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix = "c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix = "sql"%>
+
+<%@ page import="java.io.*,java.util.*, javax.servlet.*" %>
+<%@ page import="javax.servlet.http.*" %>
+<%@ page import="org.apache.commons.fileupload.*" %>
+<%@ page import="org.apache.commons.fileupload.disk.*" %>
+<%@ page import="org.apache.commons.fileupload.servlet.*" %>
+<%@ page import="org.apache.commons.io.output.*" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -20,10 +29,7 @@
         <link href="${pageContext.request.contextPath}/bootstrap.min.css" rel="stylesheet" />
         <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
         <script>
-            (adsbygoogle = window.adsbygoogle || []).push({
-                google_ad_client: "ca-pub-3554298857405272",
-                enable_page_level_ads: true
-            });
+             
         </script>
     </head>
     <body>
@@ -73,18 +79,17 @@
 
                     </div>
                 </div>        
-                <div class="col-md-10 rounded-div">    
-                    <form class="navbar-form navbar-left" action="postAdServlet" method="post" id="addpost">
+                <div class="col-md-6 rounded-div">    
+                    <form class="navbar-form navbar-left" action="postAdServlet" method="post" id="addpost"  enctype="multipart/form-data" >
                         <div class="form-group" id="addpost">
-                            <label>Category </label>&nbsp;
-                            <select name='role' class="form-control" >
+                            <label>Category</label>&nbsp;&nbsp;&nbsp;<select name='role' class="form-control" >
                                 <c:forEach var = "row" items = "${ad_count_result.rows}">
-                                    <option value="${row.category_name}" >${row.category_name}</option>
-
+                                    <option value="${row.category_name}" >${row.category_name}</option> 
                                 </c:forEach>
-                            </select>  &nbsp;&nbsp;&nbsp;
-                            <label>Subject </label>&nbsp;<input type="text" placeholder="Subject" class="form-control" name="subject"><br> <br>
-                            <label>Content </label>&nbsp;<textarea name="content" rows="4" cols="50" form="addpost" class="form-control" placeholder="Content" ></textarea> <br> <br>
+                            </select>  <br> <br>
+                            
+                            <label>Subject</label>&nbsp;&nbsp;&nbsp;<input type="text" placeholder="Subject" class="form-control" name="subject" size="50px"><br> <br>
+                            <label>Content</label>&nbsp;&nbsp;&nbsp;<textarea name="content" rows="4" cols="50" form="addpost" class="form-control" placeholder="Content" ></textarea> <br> <br>
                             <label>Add photo </label><input type = "file" class="form-control"  name = "file" size = "50" />
                             <button type="submit" class="btn btn-info">Post Now</button>
                             <sql:update dataSource = "${snapshot}" var = "result">

@@ -23,26 +23,7 @@
         <link href="${pageContext.request.contextPath}/bootstrap.min.css" rel="stylesheet" />
         <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
         <script type="text/javascript">
-            (adsbygoogle = window.adsbygoogle || []).push({
-                google_ad_client: "ca-pub-3554298857405272",
-                enable_page_level_ads: true
-            });
-            $.subscribe('onclicksearch', function (event, data) {
-                $('#message').empty();
-                var nic_Search = $('#nic_Search').val();
-            });
-            $.subscribe('anyerrors', function (event, data) {
-                window.location = "${pageContext.request.contextPath}/LogoutUserLogin.action?";
-            });
-            function testf(categ) {
-
-                alert(categ);
-                alert("${pageContext.request.contextPath}/" + categ + "/");
-                
-            }
-
-
-
+             
         </script> 
 
     </head>
@@ -106,7 +87,6 @@
             <c:choose>
                 <c:when test="${c_category == 'All'}">
                      select count(*) as ad_count_all from advertisement where status='ACT';
-                  
                 </c:when>    
                 <c:otherwise>
                      select count(*) as ad_count_all from advertisement where status='ACT' and ad_category=?;
@@ -162,7 +142,6 @@
                              
                         <c:forEach var = "row" items = "${ad_count_result.rows}">
                             <a href='${pageContext.request.contextPath}/ad.jsp?category=${row.ad_category}'  title="${row.ad_category} ads" class="list-group-item"><i class="fa fa-fw fa-${row.ad_category}" aria-hidden="true"></i> ${row.ad_category}  (${row.ad_count})</a>
-                                 
                         </c:forEach>
 
                     </div>

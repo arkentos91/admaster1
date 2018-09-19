@@ -128,12 +128,14 @@
         <div class="container">
             <div class="row content">
                 <div class="col-md-2 sidenav"> 
-                    <div class="list-group">
+                    <div class="list-group">   
+                        
+                        
+                        
+                        
                         <a href='${pageContext.request.contextPath}/ad.jsp?category=All'  title="All ads" class="list-group-item"><i class="fa fa-fw fa-${row.ad_category}" aria-hidden="true"></i> All Ads</a>
                         <c:forEach var = "row" items = "${ad_count_result.rows}">
-                            <!--<a href='${pageContext.request.contextPath}/${row.ad_category}/'  onclick="testf('${row.ad_category}')" title="${row.ad_category} ads" class="list-group-item"><i class="fa fa-fw fa-${row.ad_category}" aria-hidden="true"></i> ${row.ad_category}  (${row.ad_count})</a>-->
                             <a href='${pageContext.request.contextPath}/ad.jsp?category=${row.ad_category}' title="${row.ad_category} ads" class="list-group-item"><i class="fa fa-fw fa-${row.ad_category}" aria-hidden="true"></i> ${row.ad_category}  (${row.ad_count})</a>
-
                         </c:forEach>
 
                     </div>
