@@ -8,7 +8,7 @@ package com.arkentos.admaster;
 import java.io.File;
 import java.sql.*;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.PrintWriter;   
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
@@ -23,7 +23,12 @@ import org.apache.commons.fileupload.FileItemFactory;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
-
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
+import java.util.Date;
 /**
  *
  * @author JayanaI
@@ -48,6 +53,7 @@ public class postAdServlet extends HttpServlet {
         String subject = null;
         String content = null;
         String fileNameWithExt=null;
+        String imagepath=null;
         
 //            String role = request.getParameter("role");
 //            String subject = request.getParameter("subject");
@@ -59,7 +65,8 @@ public class postAdServlet extends HttpServlet {
             ServletFileUpload upload = new ServletFileUpload(factory);
             Iterator<FileItem> iterator = upload.parseRequest(request).iterator();
             File uploadedFile;
-            String dirPath = "D:\\Admaster\\J";
+//            String dirPath = "D:\\Admaster\\J";
+            String dirPath = "C:\\Users\\JayanaI\\Documents\\NetBeansProjects\\mavenproject2\\admaster\\src\\main\\webapp\\images\\user";
             while (iterator.hasNext()) {
 
                 FileItem item = iterator.next();
@@ -72,8 +79,10 @@ public class postAdServlet extends HttpServlet {
                     if (!filePath.exists()) {
                         filePath.mkdirs();
                     }
-
-                    uploadedFile = new File(dirPath + "/" + fileNameWithExt);
+                    DateFormat dateFormat = new SimpleDateFormat("yyMMddHHmmss");
+                    Date date = new Date();
+                    imagepath = "/images/user/"+dateFormat.format(date)+"_"+ fileNameWithExt;
+                    uploadedFile = new File(dirPath + "/" +dateFormat.format(date)+"_"+ fileNameWithExt);
                     item.write(uploadedFile);
                 } else {
                     String otherFieldName = item.getFieldName();
@@ -93,8 +102,8 @@ public class postAdServlet extends HttpServlet {
             try {
                 Class.forName("com.mysql.jdbc.Driver");
                 Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/mart", "root", "password");
-                String query = " insert into advertisement (ad_category, ad_subject, ad_content, mobile, status)"
-                        + " values (?, ?, ?, ?, ?)";
+                String query = " insert into advertisement (ad_category, ad_subject, ad_content, mobile, status,ad_image)"
+                        + " values (?, ?, ?, ?, ?, ?)";
 
                 // create the mysql insert preparedstatement
                 PreparedStatement preparedStmt = con.prepareStatement(query);
@@ -103,6 +112,7 @@ public class postAdServlet extends HttpServlet {
                 preparedStmt.setString(3, content);
                 preparedStmt.setString(4, "0718898786");
                 preparedStmt.setString(5, "ACT");
+                preparedStmt.setString(6, imagepath);
 
                 // execute the preparedstatement
                 preparedStmt.execute();
