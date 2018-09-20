@@ -15,40 +15,38 @@
         <meta name="keywords" content="Massage, Massage classifieds, Massage ads,  lanka ads, advertisement, ads, lanka, sri lanka, classifieds, advertisements, ikman, lanka classifieds, free classified ads, service, buy, sell ">
         <meta name="description" content="Massage, Massage classifieds, Massage ads,  Sri Lankan best classified ad site. Post your ads without any restrictions. ">
         <meta name="ROBOTS" content="all">
- 
+
         <link href="${pageContext.request.contextPath}/style.css?10.1" rel="stylesheet" />
         <link href="${pageContext.request.contextPath}/font-awesome-4.6.3/css/font-awesome.min.css"/>
         <link href="${pageContext.request.contextPath}/bootstrap.min.css" rel="stylesheet" />
         <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
         <script src="${pageContext.request.contextPath}/font-awesome-4.6.3/js/timeago.js" type="text/javascript"></script>
-        
+
 
     </head>
     <body >
         <%
- 
+
             String pages = request.getParameter("page");
             String category = request.getParameter("category");
-            String  search = request.getParameter("search");
-            String  query,count_query = "";
-            try{
-            if (search.isEmpty()){
-                search="1=1";
-                query="select * from advertisement where status='ACT' and ( ? ) limit ?,10";
-                count_query ="select count(*) as ad_count_all from advertisement where status='ACT'";
-            }else{
+            String search = request.getParameter("search");
+            String query, count_query = "";
+            try {
+                if (search.isEmpty()) {
+                    search = "1=1";
+                    query = "select *,,time_ago(createdtime) time_ago from advertisement where status='ACT' and ( ? ) limit ?,10";
+                    count_query = "select count(*) as ad_count_all from advertisement where status='ACT'";
+                } else {
 //                search= "ad_subject like '%"+search+"%' or ad_content like '%"+search+"%'";
-                search= "%"+search+"%";
-                query="select * from advertisement where status='ACT' and (ad_content like ? or ad_subject like '"+search+"' ) limit ?,10";
-                count_query ="select count(*) as ad_count_all from advertisement where status='ACT' and (ad_content like '"+search+"' or ad_subject like '"+search+"' )";
+                    search = "%" + search + "%";
+                    query = "select *,time_ago(createdtime) time_ago from advertisement where status='ACT' and (ad_content like ? or ad_subject like '" + search + "' ) limit ?,10";
+                    count_query = "select count(*) as ad_count_all from advertisement where status='ACT' and (ad_content like '" + search + "' or ad_subject like '" + search + "' )";
+                }
+            } catch (Exception e) {
+                search = "1=1";
+                query = "select *,time_ago(createdtime) time_ago from advertisement where status='ACT' and ( ? ) limit ?,10";
+                count_query = "select count(*) as ad_count_all from advertisement where status='ACT'";
             }
-            }catch(Exception e){
-                e.printStackTrace();
-                search="1=1";
-                query="select * from advertisement where status='ACT' and ( ? ) limit ?,10";
-                count_query ="select count(*) as ad_count_all from advertisement where status='ACT'";
-            }  
-            System.out.print(search);
         %>
 
 
@@ -58,7 +56,7 @@
         <c:set var = "c_search"  value="<%= search%>"  />   
         <c:set var = "query"  value="<%= query%>"  />   
         <c:set var = "count_query"  value="<%= count_query%>"  />   
- 
+
         <c:set var = "from_p" scope = "session" value = "${c_page*10}"/>
         <fmt:parseNumber var="i" type="number" value="${from_p}" />
         <sql:setDataSource var = "snapshot" driver = "com.mysql.jdbc.Driver" url = "jdbc:mysql://localhost:3306/mart"  user = "root"  password = "password"/>
@@ -86,7 +84,7 @@
             select count(ad_category) as ad_count,ad_category from advertisement where status='ACT' group by ad_category;
         </sql:query>  
         <sql:query dataSource = "${snapshot}" var = "ad_count_all_result">
-           ${count_query}
+            ${count_query}
         </sql:query>       
 
 
@@ -124,15 +122,11 @@
                 </div>
             </div>
         </div>
-                
+
         <div class="container">
             <div class="row content">
                 <div class="col-md-2 sidenav"> 
-                    <div class="list-group">   
-                        
-                        
-                        
-                        
+                    <div class="list-group">    
                         <a href='${pageContext.request.contextPath}/ad.jsp?category=All'  title="All ads" class="list-group-item"><i class="fa fa-fw fa-${row.ad_category}" aria-hidden="true"></i> All Ads</a>
                         <c:forEach var = "row" items = "${ad_count_result.rows}">
                             <a href='${pageContext.request.contextPath}/ad.jsp?category=${row.ad_category}' title="${row.ad_category} ads" class="list-group-item"><i class="fa fa-fw fa-${row.ad_category}" aria-hidden="true"></i> ${row.ad_category}  (${row.ad_count})</a>
@@ -164,11 +158,8 @@
                     <div id="valueHolderId">${someValue}</div>
                     <%--<c:out value="${i}"/>--%> 
                     <%--<c:out value="${query}"/>--%>  
-                    <%--<c:out value="${c_search}"/>--%>  
-                    <abbr class="timeago" title="19 March 2013 04:51:33 PM"></abbr>
-                    
-                    
-                     
+                    <%--<c:out value="${c_search}"/>--%>   
+ 
                     <c:forEach var = "row" items = "${result.rows}">
                         <div class="col-md-5 rounded-div">
                             <a href="${pageContext.request.contextPath}/ad_view.jsp?id=${row.id}">
@@ -179,12 +170,10 @@
                                 <img src="${pageContext.request.contextPath}${row.ad_image}" alt="picture of Massage - Full Body Massage" class="img-thumbnail" height="100" width="100">
                                 <%--<c:out value = "${row.ad_image}" />--%>
                             </a>
-                            <p style="overflow:hidden;">
-                                ${row.ad_content}
-                                <%--<c:out value = "${row.ad_content}" />--%>
-                                <!--I'm boy. Full body massage,foot massages,head massage and relaxation filing massage. Only Griles and women. Hotel visits and home visits. Cll me......-->
-                                <br />
-                                <span class="adtime">9 hours ago</span>
+                            <p style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; ">${row.ad_content}</p>
+                            
+                                 <br />
+                                <span class="adtime">${row.time_ago}</span> 
                         </div>
                     </c:forEach>
                 </div>
@@ -193,7 +182,7 @@
             <ul class="pager">
                 <c:if test="${fpage eq true}">
                     <li><a href="<%=request.getContextPath()%>/?page=${c_page-1}"  >< Previous 10 </a></li>
-                    </c:if>
+                </c:if>
                 <li><a href="<%=request.getContextPath()%>/?page=${c_page+1}" > Next 10 ></a></li>
             </ul>
             <hr />
@@ -208,19 +197,7 @@
                 <a href="/privacy-policy.php">Privacy Policy</a>
                 <a href="${pageContext.request.contextPath}/contactus.jsp">Contact</a>
             </p>
-        </footer> 
-        <!--        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-                <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>-->
-        <script type="text/javascript">
-            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
-            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));</script>
-        <script type="text/javascript">
-            try {
-                var pageTracker = _gat._getTracker("UA-2923101-5");
-                pageTracker._trackPageview();
-            } catch (err) {
-            }
-        </script>
+        </footer>  
     </body>
 </html>
 

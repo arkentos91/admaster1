@@ -29,7 +29,11 @@
         <link href="${pageContext.request.contextPath}/bootstrap.min.css" rel="stylesheet" />
         <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
         <script>
-             
+             $('#submit').click(function(){
+            if($.trim($('#subject').val()) == ''){
+               alert('Input can not be left blank');
+            }
+         });
         </script>
     </head>
     <body>
@@ -78,7 +82,8 @@
                     <div class="list-group">
 
                     </div>
-                </div>        
+                </div>   
+                ${message}
                 <div class="col-md-6 rounded-div">    
                     <form class="navbar-form navbar-left" action="postAdServlet" method="post" id="addpost"  enctype="multipart/form-data" >
                         <div class="form-group" id="addpost">
@@ -88,7 +93,7 @@
                                 </c:forEach>
                             </select>  <br> <br>
                             
-                            <label>Subject</label>&nbsp;&nbsp;&nbsp;<input type="text" placeholder="Subject" class="form-control" name="subject" size="50px"><br> <br>
+                            <label>Subject</label>&nbsp;&nbsp;&nbsp;<input type="text" placeholder="Subject" class="form-control" name="subject" size="50px" ><br> <br>
                             <label>Content</label>&nbsp;&nbsp;&nbsp;<textarea name="content" rows="4" cols="50" form="addpost" class="form-control" placeholder="Content" ></textarea> <br> <br>
                             <label>Add photo </label><input type = "file" class="form-control"  name = "file" size = "50" />
                             <button type="submit" class="btn btn-info">Post Now</button>

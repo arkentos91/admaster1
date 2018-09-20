@@ -54,10 +54,10 @@
         <sql:query dataSource = "${snapshot}" var = "result">
            <c:choose>
                 <c:when test="${c_category == 'All'}">
-                    select * from advertisement where status='ACT' and ad_category !=? limit ?,10
+                    select *,time_ago(createdtime) time_ago from advertisement where status='ACT' and ad_category !=? limit ?,10
                 </c:when>    
                 <c:otherwise>
-                    select * from advertisement where status='ACT' and ad_category=? limit ?,10
+                    select *,time_ago(createdtime) time_ago from advertisement where status='ACT' and ad_category=? limit ?,10
                 </c:otherwise>
             </c:choose>
             
@@ -180,11 +180,10 @@
                                 <img src="${pageContext.request.contextPath}${row.ad_image}" alt="picture of Massage - Full Body Massage" class="img-thumbnail" height="100" width="100">
                                 
                             </a>
-                            <p style="overflow:hidden;">
-                                ${row.ad_content}
+                            <p style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; ">${row.ad_content}</p>
                                  
                                 <br />
-                                <span class="adtime">9 hours ago</span>
+                                <span class="adtime">${row.time_ago}</span> 
                         </div>
                     </c:forEach>
                 </div>
@@ -209,18 +208,7 @@
                 <a href="${pageContext.request.contextPath}/contactus.jsp">Contact</a>
             </p>
         </footer> 
-        <!--        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-                <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>-->
-        <script type="text/javascript">
-            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
-            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));</script>
-        <script type="text/javascript">
-            try {
-                var pageTracker = _gat._getTracker("UA-2923101-5");
-                pageTracker._trackPageview();
-            } catch (err) {
-            }
-        </script>
+ 
     </body>
 </html>
 
