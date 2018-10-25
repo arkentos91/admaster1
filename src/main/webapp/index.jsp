@@ -49,6 +49,19 @@
             }
         %>
 
+<script src="https://www.gstatic.com/firebasejs/5.5.1/firebase.js"></script>
+<script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyAUHTeD6sXvQCcjxgF5GA_mEMz9ffyQO3k",
+    authDomain: "admaster-v1.firebaseapp.com",
+    databaseURL: "https://admaster-v1.firebaseio.com",
+    projectId: "admaster-v1",
+    storageBucket: "admaster-v1.appspot.com",
+    messagingSenderId: "541023172550"
+  };
+  firebase.initializeApp(config);
+</script>
 
         <c:set var = "salary" scope = "session" value = "${2000*2}"/>
         <c:set var = "c_page" value="<%= pages%>" />  
@@ -102,6 +115,7 @@
                     &nbsp;&nbsp;
                     <span class="top-fb">
                         <a class="btn btn-sm btn-info" href="${pageContext.request.contextPath}/postAd.jsp">Post Your Ad</a>
+                        <a class="btn btn-sm btn-info" href="${pageContext.request.contextPath}/login.jsp">Post Your Ad Login</a>
                     </span>
                 </div>
                 <div id="navbar" class="navbar-collapse collapse">
@@ -192,7 +206,7 @@
             <p style="float:right">&copy; 2018 Lanka Ads</p>
             <p class="footer-links">
                 <a href="/">Home</a>
-                <a href="/postAd.php">Post Ad</a>
+                <a href="${pageContext.request.contextPath}/postAd.jsp">Post Ad</a>
                 <a href="/terms.php">Terms & Conditions</a>
                 <a href="/privacy-policy.php">Privacy Policy</a>
                 <a href="${pageContext.request.contextPath}/contactus.jsp">Contact</a>
