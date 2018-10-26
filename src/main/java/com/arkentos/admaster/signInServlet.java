@@ -32,8 +32,8 @@ import java.util.Date;
  *
  * @author JayanaI
  */
-@WebServlet(name = "signUpServlet", urlPatterns = {"/signUpServlet"})
-public class signUpServlet extends HttpServlet {
+@WebServlet(name = "signInServlet", urlPatterns = {"/signInServlet"})
+public class signInServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -56,8 +56,7 @@ public class signUpServlet extends HttpServlet {
             System.out.println("email got >" + email);
             System.out.println("password got >" + password);
             System.out.println("cpassword got >" + cpassword);
-
-            if (password.equals(cpassword)) {
+ 
                 try {
                     ResultSet result = null;
                     Class.forName("com.mysql.jdbc.Driver");
@@ -87,11 +86,7 @@ public class signUpServlet extends HttpServlet {
                     }
                 } catch (Exception e) {
                 }
-            } else {
-                message = "Confim Password is invalid";
-                request.setAttribute("message", message);
-                request.getRequestDispatcher("login.jsp").forward(request, response);
-            }
+             
 
             
         }
@@ -114,7 +109,7 @@ public class signUpServlet extends HttpServlet {
         try {
             processRequest(request, response);
         } catch (Exception ex) {
-            Logger.getLogger(signUpServlet.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(signInServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -132,7 +127,7 @@ public class signUpServlet extends HttpServlet {
         try {
             processRequest(request, response);
         } catch (Exception ex) {
-            Logger.getLogger(signUpServlet.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(signInServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

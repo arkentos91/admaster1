@@ -36,7 +36,7 @@
          });
          
          function gotoSignUp(){
-             location.href='${pageContext.request.contextPath}/signup.jsp';
+             location.href='${pageContext.request.contextPath}/postAd.jsp';
          }
         </script>
         
@@ -96,7 +96,7 @@
                             
                             <button type="submit" class="btn btn-info">Log In</button>
                             <!--<button  class="btn btn-info">Sign Up</button>-->
-                            <input type="button" class="btn btn-info" id="signupbtn" onclick="gotoSignUp()" value="Signup">
+                            <input type="button" class="btn btn-info" id="signupbtn" onclick="" value="Login">
                              
                         </div>
                     </form>  
